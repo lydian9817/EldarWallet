@@ -1,4 +1,4 @@
-package com.example.eldarwallet.presentation
+package com.example.eldarwallet.presentacion
 
 data class AppState(
     val nombre: String = "",

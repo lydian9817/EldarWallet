@@ -1,14 +1,16 @@
-package com.example.eldarwallet.presentation.home
+package com.example.eldarwallet.presentacion.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModel
 
 @Composable
 fun HomeScreen(
-    irAAgregarTarjeta: () -> Unit
+    irAAgregarTarjeta: () -> Unit,
+    viewModel: ViewModel
 ) {
     Column() {
         Text(text = "Saldo actual")

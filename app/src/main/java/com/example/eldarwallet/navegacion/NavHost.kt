@@ -1,13 +1,13 @@
-package com.example.eldarwallet.navigation
+package com.example.eldarwallet.navegacion
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.eldarwallet.presentation.MainViewModel
-import com.example.eldarwallet.presentation.agregartarjeta.AgregarTarjeta
-import com.example.eldarwallet.presentation.home.HomeScreen
-import com.example.eldarwallet.presentation.login.LoginScreen
+import com.example.eldarwallet.presentacion.MainViewModel
+import com.example.eldarwallet.presentacion.agregartarjeta.AgregarTarjeta
+import com.example.eldarwallet.presentacion.home.HomeScreen
+import com.example.eldarwallet.presentacion.login.LoginScreen
 import com.example.eldarwallet.util.Screen
 
 @Composable
@@ -22,7 +22,8 @@ fun NavHost(
             HomeScreen(
                 irAAgregarTarjeta = {
                     navController.navigate(Screen.AgregarTarjeta.route)
-                }
+                },
+                viewModel = viewModel
             )
         }
         composable(route = Screen.LoginScreen.route) {

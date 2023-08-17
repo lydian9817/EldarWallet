@@ -1,4 +1,4 @@
-package com.example.eldarwallet.presentation.login
+package com.example.eldarwallet.presentacion.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +9,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.eldarwallet.presentation.MainViewModel
+import com.example.eldarwallet.presentacion.MainViewModel
 
 @Composable
 fun LoginScreen(

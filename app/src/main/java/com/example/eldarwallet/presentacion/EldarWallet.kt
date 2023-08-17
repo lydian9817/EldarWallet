@@ -1,8 +1,8 @@
-package com.example.eldarwallet.presentation
+package com.example.eldarwallet.presentacion
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.example.eldarwallet.navigation.NavHost
+import com.example.eldarwallet.navegacion.NavHost
 
 @Composable
 fun EldarWallet(
