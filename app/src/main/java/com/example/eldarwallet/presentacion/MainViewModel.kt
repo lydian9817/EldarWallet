@@ -6,15 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.eldarwallet.dominio.modelos.Tarjeta
 import com.example.eldarwallet.dominio.modelos.Usuario
 import com.example.eldarwallet.dominio.repositorios.WalletRepo
-import com.example.eldarwallet.util.AMEX
-import com.example.eldarwallet.util.MASTERCARD
-import com.example.eldarwallet.util.VISA
+import com.example.eldarwallet.presentacion.detalle.EstadoDetalle
+import com.example.eldarwallet.presentacion.home.EstadoHome
+import com.example.eldarwallet.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,15 +26,18 @@ class MainViewModel @Inject constructor(
 ) : ViewModel(){
 
     //private val _estado = mutableStateOf(EstadoDeLaApp())
-    val estado: StateFlow<EstadoDeLaApp> =
-        repo.getTarjetas().map { EstadoDeLaApp(it) }
+    val estado: StateFlow<EstadoHome> =
+        repo.getTarjetas().map { EstadoHome(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(),
-                initialValue = EstadoDeLaApp()
+                initialValue = EstadoHome()
             )
-    private lateinit var usuarioActual: Usuario
+    lateinit var detalle: StateFlow<EstadoDetalle>
 
+    private lateinit var usuarioActual: Usuario
+    private var numeroDeTarjetaActual = 0L
+    lateinit var respuestaQr: Response
 
     fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
@@ -51,6 +57,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun getTarjeta() {
+        detalle = repo.getTarjeta(numeroDeTarjetaActual).map { EstadoDetalle(it) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(),
+                initialValue = EstadoDetalle()
+            )
+    }
+
     fun seleccionarMarcaDeTarjeta(primerNumero: Char): String {
         var marca = ""
         when(primerNumero){
@@ -61,7 +76,27 @@ class MainViewModel @Inject constructor(
         return marca
     }
 
+    fun pagarConQr() {
+        val client = OkHttpClient()
+
+        val mediaType = "application/x-www-form-urlencoded".toMediaTypeOrNull()
+        val body =
+            "content=${usuarioActual.nombre} ${usuarioActual.apellido}".toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("https://neutrinoapi-qr-code.p.rapidapi.com/qr-code")
+            .post(body)
+            .addHeader("content-type", "application/x-www-form-urlencoded")
+            .addHeader("X-RapidAPI-Key", QR_API_KEY)
+            .addHeader("X-RapidAPI-Host", QR_API_HOST)
+            .build()
+
+            val response = client.newCall(request).execute()
+            respuestaQr = response
+    }
     fun guardarUsuario(usuario: Usuario){
         usuarioActual = usuario
+    }
+    fun guardarNumeroDeTarjeta(numero: Long){
+        numeroDeTarjetaActual = numero
     }
 }

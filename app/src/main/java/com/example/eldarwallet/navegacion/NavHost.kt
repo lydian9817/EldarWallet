@@ -6,8 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.eldarwallet.presentacion.MainViewModel
 import com.example.eldarwallet.presentacion.agregartarjeta.AgregarTarjeta
+import com.example.eldarwallet.presentacion.detalle.DetalleDeTarjetaScreen
+import com.example.eldarwallet.presentacion.generarpago.GenerarPagoScreen
 import com.example.eldarwallet.presentacion.home.HomeScreen
 import com.example.eldarwallet.presentacion.login.LoginScreen
+import com.example.eldarwallet.presentacion.pagoqr.PagoQrScreen
 import com.example.eldarwallet.util.Screen
 
 @Composable
@@ -21,7 +24,13 @@ fun NavHost(
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(
                 irAAgregarTarjeta = {
-                    navController.navigate(Screen.AgregarTarjeta.route)
+                    navController.navigate(Screen.AgregarTarjetaScreen.route)
+                },
+                irAPagoConQr = {
+                    navController.navigate(Screen.PagoQrScreen.route)
+                },
+                irAGenerarPago = {
+                    navController.navigate(Screen.GenerarPagoScreen.route)
                 },
                 viewModel = viewModel
             )
@@ -36,7 +45,7 @@ fun NavHost(
                 }
             )
         }
-        composable(route = Screen.AgregarTarjeta.route){
+        composable(route = Screen.AgregarTarjetaScreen.route){
             AgregarTarjeta(
                 viewModel = viewModel,
                 volver = {
@@ -44,5 +53,26 @@ fun NavHost(
                 }
             )
         }
+        composable(route = Screen.PagoQrScreen.route){
+            PagoQrScreen(
+                viewModel = viewModel
+            )
+        }
+        composable(route = Screen.GenerarPagoScreen.route){
+            GenerarPagoScreen(
+                viewModel = viewModel,
+                confirmarPago = {numeroDeTarjeta ->
+                    viewModel.guardarNumeroDeTarjeta(numeroDeTarjeta)
+                    viewModel.getTarjeta()
+                    navController.navigate(Screen.DetalleDeTarjetaScreen.route)
+                }
+            )
+        }
+        composable(route = Screen.DetalleDeTarjetaScreen.route){
+            DetalleDeTarjetaScreen(
+                viewModel = viewModel
+            )
+        }
+
     }
 }

@@ -15,6 +15,8 @@ import com.example.eldarwallet.presentacion.MainViewModel
 @Composable
 fun HomeScreen(
     irAAgregarTarjeta: () -> Unit,
+    irAPagoConQr: () -> Unit,
+    irAGenerarPago: () -> Unit,
     viewModel: MainViewModel,
 ) {
     val estado by viewModel.estado.collectAsState()
@@ -34,12 +36,17 @@ fun HomeScreen(
                     apellidoDelTitular = tarjeta.apellidoDelTitular,
                     borrarTarjeta = { viewModel.borrarTarjeta(tarjeta) }
                 )
-
             }
         }
 
         Button(onClick = irAAgregarTarjeta) {
             Text(text = "Agregar tarjeta")
+        }
+        Button(onClick = irAPagoConQr) {
+            Text(text = "Pagar con QR")
+        }
+        Button(onClick = irAGenerarPago) {
+            Text(text = "Generar pago")
         }
     }
 }

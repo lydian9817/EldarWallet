@@ -14,4 +14,7 @@ interface WalletDao {
     suspend fun borrarTarjeta(tarjeta: Tarjeta)
     @Query("SELECT * from tarjeta ORDER BY numero ASC")
     fun getTarjetas(): Flow<List<Tarjeta>>
+
+    @Query("SELECT * from tarjeta WHERE numero = :numero")
+    fun getTarjeta(numero: Long): Flow<Tarjeta>
 }

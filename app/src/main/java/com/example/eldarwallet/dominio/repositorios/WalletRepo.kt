@@ -10,4 +10,7 @@ interface WalletRepo {
     suspend fun borrarTarjeta(tarjeta: Tarjeta)
 
     fun getTarjetas(): Flow<List<Tarjeta>>
+
+    fun getTarjeta(numero: Long): Flow<Tarjeta>
+
 }
