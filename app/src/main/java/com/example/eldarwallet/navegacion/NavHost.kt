@@ -28,10 +28,10 @@ fun NavHost(
         }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(
-                login = {
+                login = { usuario ->
+                    viewModel.guardarUsuario(usuario)
                     navController.navigate(Screen.HomeScreen.route)
-                },
-                viewModel = viewModel
+                }
             )
         }
         composable(route = Screen.AgregarTarjeta.route){

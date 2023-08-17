@@ -8,6 +8,7 @@ data class Tarjeta(
     @PrimaryKey val numero: Long,
     val codigo: Int,
     val vencimiento: String,
+    val marca: String,
     val nombreDelTitular: String,
     val apellidoDelTitular: String
 )

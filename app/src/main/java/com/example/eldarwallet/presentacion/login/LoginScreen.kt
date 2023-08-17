@@ -2,25 +2,29 @@ package com.example.eldarwallet.presentacion.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.eldarwallet.presentacion.MainViewModel
+import com.example.eldarwallet.dominio.modelos.Usuario
 
 @Composable
 fun LoginScreen(
-    login: () -> Unit,
-    viewModel: MainViewModel
+    login: (Usuario) -> Unit,
 ) {
-    val state = viewModel.state
     var nombre by remember { mutableStateOf("") }
     var apellido by remember { mutableStateOf("") }
 
-    Column() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(text = "Bienvenido a EldarWallet")
         TextField(
             value = nombre,
@@ -33,7 +37,7 @@ fun LoginScreen(
             label = { Text(text = "Apellido") }
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = login) {
+        Button(onClick = { login(Usuario(nombre, apellido)) }) {
             Text(text = "Log in")
         }
     }

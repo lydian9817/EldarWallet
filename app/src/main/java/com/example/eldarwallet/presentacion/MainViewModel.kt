@@ -1,21 +1,59 @@
 package com.example.eldarwallet.presentacion
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.eldarwallet.dominio.modelos.Tarjeta
+import com.example.eldarwallet.dominio.modelos.Usuario
+import com.example.eldarwallet.dominio.repositorios.WalletRepo
+import com.example.eldarwallet.util.AMEX
+import com.example.eldarwallet.util.MASTERCARD
+import com.example.eldarwallet.util.VISA
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel(){
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repo: WalletRepo
+) : ViewModel(){
 
-    private val _state = mutableStateOf(AppState())
-    val state: State<AppState> = _state
+    //private val _estado = mutableStateOf(EstadoDeLaApp())
+    val estado: StateFlow<EstadoDeLaApp> =
+        repo.getTarjetas().map { EstadoDeLaApp(it) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(),
+                initialValue = EstadoDeLaApp()
+            )
+    lateinit var usuarioActual: Usuario
 
-    fun actualizarNombre(value: String) {
-        _state.value = state.value.copy(
-            nombre = value
-        )
+
+    fun agregarTarjeta(tarjeta: Tarjeta){
+        viewModelScope.launch {
+            repo.agregarTarjeta(tarjeta)
+        }
     }
-    fun actualizarApellido(value: String) {
-        _state.value = state.value.copy(
-            apellido = value
-        )
+
+    fun borrarTarjeta(tarjeta: Tarjeta){
+        viewModelScope.launch {
+            repo.borrarTarjeta(tarjeta)
+        }
+    }
+
+    fun seleccionarMarcaDeTarjeta(primerNumero: Char): String {
+        var marca = ""
+        when(primerNumero){
+            '3' -> marca = AMEX
+            '4' -> marca = VISA
+            '5' -> marca = MASTERCARD
+        }
+        return marca
+    }
+
+    fun guardarUsuario(usuario: Usuario){
+        usuarioActual = usuario
     }
 }
