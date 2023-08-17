@@ -1,12 +1,7 @@
 package com.example.eldarwallet.presentacion.login
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,18 +18,22 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Bienvenido a EldarWallet")
+        Text(text = "Bienvenido a EldarWallet", style = MaterialTheme.typography.headlineSmall)
         TextField(
             value = nombre,
             onValueChange = { nombre = it },
-            label = { Text(text = "Nombre") }
+            label = { Text(text = "Nombre") },
+            singleLine = true
         )
+        Spacer(modifier = Modifier.height(10.dp))
         TextField(
             value = apellido,
             onValueChange = { apellido = it},
-            label = { Text(text = "Apellido") }
+            label = { Text(text = "Apellido") },
+            singleLine = true
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = { login(Usuario(nombre, apellido)) }) {

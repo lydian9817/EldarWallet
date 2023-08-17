@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,8 +22,8 @@ fun GenerarPagoScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Seleccionar tarjeta")
-        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Seleccionar tarjeta", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(10.dp))
         LazyColumn(){
             items(estado.tarjetas){tarjeta ->
                 Row(
@@ -32,16 +33,15 @@ fun GenerarPagoScreen(
                             confirmarPago(numeroDeTarjetaSeleccionada)
                         }
                 ) {
-
                     Tarjeta(
                         numero = tarjeta.numero,
                         marca = tarjeta.marca,
                         nombreDelTitular = tarjeta.nombreDelTitular,
                         apellidoDelTitular = tarjeta.apellidoDelTitular,
-                        borrarTarjeta = { viewModel.borrarTarjeta(tarjeta) }
+                        borrarTarjeta = { viewModel.borrarTarjeta(tarjeta) },
+                        borrable = false
                     )
                 }
-
             }
         }
     }
