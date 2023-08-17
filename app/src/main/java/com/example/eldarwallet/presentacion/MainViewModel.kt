@@ -35,8 +35,13 @@ class MainViewModel @Inject constructor(
 
     fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
-            repo.agregarTarjeta(tarjeta)
-            Toast.makeText(context, "Tarjeta Agregada", Toast.LENGTH_SHORT).show()
+            if(tarjeta.apellidoDelTitular == usuarioActual.apellido
+                && tarjeta.nombreDelTitular == usuarioActual.nombre) {
+                repo.agregarTarjeta(tarjeta)
+                Toast.makeText(context, "Tarjeta Agregada", Toast.LENGTH_SHORT).show()
+            } else{
+                Toast.makeText(context, "Error. No es el titular", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
