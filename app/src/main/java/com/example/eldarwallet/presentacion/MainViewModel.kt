@@ -10,14 +10,13 @@ import com.example.eldarwallet.presentacion.detalle.EstadoDetalle
 import com.example.eldarwallet.presentacion.home.EstadoHome
 import com.example.eldarwallet.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.InputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +24,6 @@ class MainViewModel @Inject constructor(
     private val repo: WalletRepo
 ) : ViewModel(){
 
-    //private val _estado = mutableStateOf(EstadoDeLaApp())
     val estado: StateFlow<EstadoHome> =
         repo.getTarjetas().map { EstadoHome(it) }
             .stateIn(
@@ -34,10 +32,14 @@ class MainViewModel @Inject constructor(
                 initialValue = EstadoHome()
             )
     lateinit var detalle: StateFlow<EstadoDetalle>
+    private val _estadoImagen = MutableStateFlow<InputStream?>(null)
+    val estadoImagen: StateFlow<InputStream?> = _estadoImagen
 
     private lateinit var usuarioActual: Usuario
     private var numeroDeTarjetaActual = 0L
-    lateinit var respuestaQr: Response
+
+
+
 
     fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
@@ -76,22 +78,23 @@ class MainViewModel @Inject constructor(
         return marca
     }
 
-    fun pagarConQr() {
+    fun generarQr() {
         val client = OkHttpClient()
 
         val mediaType = "application/x-www-form-urlencoded".toMediaTypeOrNull()
         val body =
             "content=${usuarioActual.nombre} ${usuarioActual.apellido}".toRequestBody(mediaType)
-        val request = Request.Builder()
-            .url("https://neutrinoapi-qr-code.p.rapidapi.com/qr-code")
+            val request = Request.Builder()
+            .url(URL)
             .post(body)
             .addHeader("content-type", "application/x-www-form-urlencoded")
             .addHeader("X-RapidAPI-Key", QR_API_KEY)
             .addHeader("X-RapidAPI-Host", QR_API_HOST)
             .build()
-
-            val response = client.newCall(request).execute()
-            respuestaQr = response
+            viewModelScope.launch(Dispatchers.IO){
+               val respuesta = client.newCall(request).execute()
+                _estadoImagen.value = respuesta.body?.byteStream()
+            }
     }
     fun guardarUsuario(usuario: Usuario){
         usuarioActual = usuario

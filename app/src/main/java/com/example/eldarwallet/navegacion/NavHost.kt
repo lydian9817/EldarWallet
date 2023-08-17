@@ -27,6 +27,7 @@ fun NavHost(
                     navController.navigate(Screen.AgregarTarjetaScreen.route)
                 },
                 irAPagoConQr = {
+                    viewModel.generarQr()
                     navController.navigate(Screen.PagoQrScreen.route)
                 },
                 irAGenerarPago = {
