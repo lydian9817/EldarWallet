@@ -1,4 +1,6 @@
 package com.example.eldarwallet.presentacion
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eldarwallet.dominio.modelos.Tarjeta
@@ -28,12 +30,13 @@ class MainViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(),
                 initialValue = EstadoDeLaApp()
             )
-    lateinit var usuarioActual: Usuario
+    private lateinit var usuarioActual: Usuario
 
 
-    fun agregarTarjeta(tarjeta: Tarjeta){
+    fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
             repo.agregarTarjeta(tarjeta)
+            Toast.makeText(context, "Tarjeta Agregada", Toast.LENGTH_SHORT).show()
         }
     }
 

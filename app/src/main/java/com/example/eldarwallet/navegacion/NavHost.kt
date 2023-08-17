@@ -30,13 +30,18 @@ fun NavHost(
             LoginScreen(
                 login = { usuario ->
                     viewModel.guardarUsuario(usuario)
-                    navController.navigate(Screen.HomeScreen.route)
+                    navController.navigate(Screen.HomeScreen.route){
+                        popUpTo(Screen.LoginScreen.route) { inclusive = true }
+                    }
                 }
             )
         }
         composable(route = Screen.AgregarTarjeta.route){
             AgregarTarjeta(
-                viewModel = viewModel
+                viewModel = viewModel,
+                volver = {
+                    navController.navigateUp()
+                }
             )
         }
     }
