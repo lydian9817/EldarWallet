@@ -38,9 +38,6 @@ class MainViewModel @Inject constructor(
     private lateinit var usuarioActual: Usuario
     private var numeroDeTarjetaActual = 0L
 
-
-
-
     fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
             if(tarjeta.apellidoDelTitular == usuarioActual.apellido
