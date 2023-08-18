@@ -23,14 +23,11 @@ fun PagoQrScreen(
             .padding(8.dp)
     ) {
         val imagenStream by viewModel.estadoImagen.collectAsState()
-
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imagenStream)
                 .build(),
             contentDescription = ""
         )
-
     }
-
 }

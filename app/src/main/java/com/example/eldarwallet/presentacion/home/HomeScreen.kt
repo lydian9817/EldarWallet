@@ -23,7 +23,6 @@ fun HomeScreen(
     viewModel: MainViewModel,
 ) {
     val estado by viewModel.estado.collectAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -44,7 +43,6 @@ fun HomeScreen(
                 )
             }
         }
-
         Button(onClick = irAAgregarTarjeta) {
             Text(text = "Agregar tarjeta")
         }

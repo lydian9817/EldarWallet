@@ -14,7 +14,6 @@ fun LoginScreen(
 ) {
     var nombre by remember { mutableStateOf("") }
     var apellido by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize(),

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WalletDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun agregarTarjeta(tarjeta: Tarjeta)
     @Delete

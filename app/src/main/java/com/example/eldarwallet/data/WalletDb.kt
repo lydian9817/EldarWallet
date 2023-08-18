@@ -9,5 +9,4 @@ import com.example.eldarwallet.dominio.modelos.Tarjeta
 @Database(entities = [Tarjeta::class], version = 1, exportSchema = false)
 abstract class WalletDb : RoomDatabase() {
     abstract fun getDao(): WalletDao
-
 }

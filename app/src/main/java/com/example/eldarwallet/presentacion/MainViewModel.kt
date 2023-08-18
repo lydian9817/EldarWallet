@@ -34,7 +34,6 @@ class MainViewModel @Inject constructor(
     lateinit var detalle: StateFlow<EstadoDetalle>
     private val _estadoImagen = MutableStateFlow<InputStream?>(null)
     val estadoImagen: StateFlow<InputStream?> = _estadoImagen
-
     private lateinit var usuarioActual: Usuario
     private var numeroDeTarjetaActual = 0L
 
@@ -74,7 +73,6 @@ class MainViewModel @Inject constructor(
         }
         return marca
     }
-
     fun generarQr() {
         val client = OkHttpClient()
 
