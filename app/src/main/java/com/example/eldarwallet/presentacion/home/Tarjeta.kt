@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Tarjeta(
-    numero: Long,
+    numero: String,
     marca: String,
     nombreDelTitular: String,
     apellidoDelTitular: String,
@@ -25,7 +25,7 @@ fun Tarjeta(
         Column(modifier = Modifier.padding(start = 4.dp)) {
             Text(text = marca)
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = numero.toString())
+            Text(text = numero)
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = "$nombreDelTitular $apellidoDelTitular")
             if(borrable) {

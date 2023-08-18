@@ -11,14 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.eldarwallet.presentacion.MainViewModel
 import com.example.eldarwallet.presentacion.home.Tarjeta
+import com.example.eldarwallet.util.Claves
 
 @Composable
 fun GenerarPagoScreen(
     viewModel: MainViewModel,
-    confirmarPago: (Long) -> Unit
+    confirmarPago: (String) -> Unit
 ) {
     val estado by viewModel.estado.collectAsState()
-    var numeroDeTarjetaSeleccionada by remember { mutableStateOf(0L) }
+    var numeroDeTarjetaSeleccionada by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -34,8 +35,8 @@ fun GenerarPagoScreen(
                         }
                 ) {
                     Tarjeta(
-                        numero = tarjeta.numero,
-                        marca = tarjeta.marca,
+                        numero = viewModel.decifrar(tarjeta.numero, Claves.NUMERO),
+                        marca = viewModel.decifrar(tarjeta.marca, Claves.MARCA),
                         nombreDelTitular = tarjeta.nombreDelTitular,
                         apellidoDelTitular = tarjeta.apellidoDelTitular,
                         borrarTarjeta = { viewModel.borrarTarjeta(tarjeta) },

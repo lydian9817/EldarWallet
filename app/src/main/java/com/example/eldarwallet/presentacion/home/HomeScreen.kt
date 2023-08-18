@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.eldarwallet.presentacion.MainViewModel
+import com.example.eldarwallet.util.Claves
 
 @Composable
 fun HomeScreen(
@@ -36,8 +37,8 @@ fun HomeScreen(
             items(estado.tarjetas){tarjeta ->
 
                 Tarjeta(
-                    numero = tarjeta.numero,
-                    marca = tarjeta.marca,
+                    numero = viewModel.decifrar(tarjeta.numero, Claves.NUMERO),
+                    marca = viewModel.decifrar(tarjeta.marca, Claves.MARCA),
                     nombreDelTitular = tarjeta.nombreDelTitular,
                     apellidoDelTitular = tarjeta.apellidoDelTitular,
                     borrarTarjeta = { viewModel.borrarTarjeta(tarjeta) }

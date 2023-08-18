@@ -12,6 +12,6 @@ class WalletRepoImpl(private val walletDao: WalletDao) : WalletRepo {
 
     override fun getTarjetas(): Flow<List<Tarjeta>> = walletDao.getTarjetas()
 
-    override fun getTarjeta(numero: Long): Flow<Tarjeta> = walletDao.getTarjeta(numero)
+    override fun getTarjeta(numero: String): Flow<Tarjeta> = walletDao.getTarjeta(numero)
 
 }

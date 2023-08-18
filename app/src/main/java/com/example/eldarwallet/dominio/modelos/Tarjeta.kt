@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tarjeta")
 data class Tarjeta(
-    @PrimaryKey val numero: Long,
-    val codigo: Int,
+    @PrimaryKey val numero: String,
+    val codigo: String,
     val vencimiento: String,
     val marca: String,
     val nombreDelTitular: String,

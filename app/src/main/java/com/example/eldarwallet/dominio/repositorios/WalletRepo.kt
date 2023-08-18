@@ -11,6 +11,6 @@ interface WalletRepo {
 
     fun getTarjetas(): Flow<List<Tarjeta>>
 
-    fun getTarjeta(numero: Long): Flow<Tarjeta>
+    fun getTarjeta(numero: String): Flow<Tarjeta>
 
 }

@@ -16,5 +16,5 @@ interface WalletDao {
     fun getTarjetas(): Flow<List<Tarjeta>>
 
     @Query("SELECT * from tarjeta WHERE numero = :numero")
-    fun getTarjeta(numero: Long): Flow<Tarjeta>
+    fun getTarjeta(numero: String): Flow<Tarjeta>
 }

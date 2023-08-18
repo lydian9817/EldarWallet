@@ -17,6 +17,8 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InputStream
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,12 +36,8 @@ class MainViewModel @Inject constructor(
     lateinit var detalle: StateFlow<EstadoDetalle>
     private val _estadoImagen = MutableStateFlow<InputStream?>(null)
     val estadoImagen: StateFlow<InputStream?> = _estadoImagen
-
     private lateinit var usuarioActual: Usuario
-    private var numeroDeTarjetaActual = 0L
-
-
-
+    private var numeroDeTarjetaActual = ""
 
     fun agregarTarjeta(tarjeta: Tarjeta, context: Context){
         viewModelScope.launch {
@@ -96,10 +94,26 @@ class MainViewModel @Inject constructor(
                 _estadoImagen.value = respuesta.body?.byteStream()
             }
     }
+    fun encriptar(valor: String, clave: String): String{
+        val texto = valor.toByteArray()
+        val claveSecreta = SecretKeySpec(clave.toByteArray(), "AES")
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
+        cipher.init(Cipher.ENCRYPT_MODE, claveSecreta)
+        val textoEncriptado = cipher.doFinal(texto)
+        return textoEncriptado.toString()
+    }
+    fun decifrar(valor: String, clave: String): String{
+        val texto = valor.toByteArray()
+        val claveSecreta = SecretKeySpec(clave.toByteArray(), "AES")
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
+        cipher.init(Cipher.DECRYPT_MODE, claveSecreta)
+        val textoEncriptado = cipher.doFinal(texto)
+        return textoEncriptado.toString()
+    }
     fun guardarUsuario(usuario: Usuario){
         usuarioActual = usuario
     }
-    fun guardarNumeroDeTarjeta(numero: Long){
+    fun guardarNumeroDeTarjeta(numero: String){
         numeroDeTarjetaActual = numero
     }
 }

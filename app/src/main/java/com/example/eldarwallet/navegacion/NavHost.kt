@@ -61,13 +61,12 @@ fun NavHost(
         }
         composable(route = Screen.GenerarPagoScreen.route){
             GenerarPagoScreen(
-                viewModel = viewModel,
-                confirmarPago = {numeroDeTarjeta ->
-                    viewModel.guardarNumeroDeTarjeta(numeroDeTarjeta)
-                    viewModel.getTarjeta()
-                    navController.navigate(Screen.DetalleDeTarjetaScreen.route)
-                }
-            )
+                viewModel = viewModel
+            ) { numeroDeTarjeta ->
+                viewModel.guardarNumeroDeTarjeta(numeroDeTarjeta)
+                viewModel.getTarjeta()
+                navController.navigate(Screen.DetalleDeTarjetaScreen.route)
+            }
         }
         composable(route = Screen.DetalleDeTarjetaScreen.route){
             DetalleDeTarjetaScreen(

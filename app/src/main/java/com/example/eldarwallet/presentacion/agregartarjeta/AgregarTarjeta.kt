@@ -1,6 +1,5 @@
 package com.example.eldarwallet.presentacion.agregartarjeta
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -14,6 +13,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.eldarwallet.dominio.modelos.Tarjeta
 import com.example.eldarwallet.presentacion.MainViewModel
+import com.example.eldarwallet.util.Claves
 
 @Composable
 fun AgregarTarjeta(
@@ -71,10 +71,12 @@ fun AgregarTarjeta(
         Button(onClick = {
             viewModel.agregarTarjeta(
                 Tarjeta(
-                    numero = numero.toLong(),
-                    codigo = codigo.toInt(),
-                    vencimiento = vencimiento,
-                    marca = viewModel.seleccionarMarcaDeTarjeta(numero[0]),
+                    numero = viewModel.encriptar(numero, Claves.NUMERO),
+                    codigo = viewModel.encriptar(codigo, Claves.CODIGO),
+                    vencimiento = viewModel.encriptar(vencimiento, Claves.VENCIMIENTO),
+                    marca = viewModel.encriptar(
+                        viewModel.seleccionarMarcaDeTarjeta(numero[0]
+                        ), Claves.MARCA),
                     nombreDelTitular = nombreDelTitular,
                     apellidoDelTitular = apellidoDelTitular
                 ),
